@@ -1,30 +1,28 @@
-const express = require('express');
-const userRouter = require('./routes/user');
-const bodyParser = require('body-parser');
+const express = require('express')
+const userRouter = require('./routes/user')
+const bodyParser = require('body-parser')
 
-const app = express();
-const port = process.env.PORT || 3001;
+const app = express()
+const port = process.env.PORT || 3001
 
-const db = require('./dbClient');
-db.on('error', (err) => {
-  console.error(err);
-});
+const db = require('./dbClient')
+db.on("error", (err) => {
+  console.error(err)
+})
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+  extended: false
+}))
+app.use(bodyParser.json())
 
-app.get('/', (req, res) => res.send('Hello World!'));
+app.get('/', (req, res) => res.send('Hello World!'))
 
-app.use('/user', userRouter);
-
-// Endpoint Health Check
-app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'OK' });
-});
+app.use('/user', userRouter)
 
 const server = app.listen(port, (err) => {
-  if (err) throw err;
-  console.log('Server listening on port ' + port);
-});
+  if (err) throw err
+  console.log("Server listening the port " + port)
+})
 
-module.exports = server;
+
+module.exports = server
