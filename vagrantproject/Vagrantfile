@@ -1,0 +1,12 @@
+Vagrant.configure("2") do |config|
+  config.vm.box = "generic/ubuntu2004"  # Utilisez la boîte Ubuntu 20.04 LTS pour Libvirt
+  config.vm.network "forwarded_port", guest: 3001, host: 3001  # Port forwarding pour l'application
+
+  config.vm.provider :libvirt do |libvirt|
+    # Configurations spécifiques à Libvirt, si nécessaire
+  end
+
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "provision.yml"  # Nom du fichier Ansible playbook
+  end
+end

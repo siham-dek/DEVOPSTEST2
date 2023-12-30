@@ -1,0 +1,38 @@
+---
+- hosts: all
+  become: true
+
+  tasks:
+    - name: Install dependencies
+      apt:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - nodejs
+        - npm
+        - redis-server  # J'ai utilisé Redis comme exemple, remplace par le nom de ta base de données
+      tags: [dependencies]
+
+    - name: Clone the application repository
+      git:
+        repo: "https://github.com/siham-dek/DevopsProject1.git"
+        dest: "/home/vagrant/DevopsProject1"
+      tags: [application]
+
+    - name: Install application dependencies
+      command: "npm install"
+      args:
+        chdir: "/home/vagrant/DevopsProject1"
+      tags: [application]
+
+    - name: Start the application
+      command: "npm start &"
+      args:
+        chdir: "/home/vagrant/DevopsProject1"
+      tags: [application]
+
+    - name: Health check
+      uri:
+        url: "http://localhost:3001/health"
+        status_code: 200
+      tags: [health_check]
